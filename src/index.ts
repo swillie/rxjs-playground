@@ -1,10 +1,32 @@
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 
-const someObservable$ = new Observable<string>(subscriber => {
-  subscriber.next('Alice');
-  subscriber.next('Ben');
-  subscriber.next('Charlie');
-  subscriber.complete();
+const interval$ = new Observable<number>(subscriber => {
+  console.log('Observable executed');
+  let counter = 1;
+  let intervalId = setInterval(() => {
+    console.log('Emitted', counter);
+    subscriber.next(counter++);
+  }, 1000);
+  
+ 
+  return () => {
+    console.log('Teardown');
+    clearInterval(intervalId);
+  }
 });
 
-someObservable$.subscribe(value => console.log(value));
+console.log('Before subscribe');
+
+const subscription = interval$.subscribe(value => console.log(value));
+
+setTimeout(() => {
+  console.log('Unsubscribe');
+  subscription.unsubscribe()
+}, 5000);
+
+
+// Cold Observable
+
+
+
+// Hot observable
