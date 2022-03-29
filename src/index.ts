@@ -27,7 +27,7 @@ setTimeout(() => {
 
 
 // Cold Observable
-const ajax$ = ajax<any>('https://random-data-api.com/api/name/random_name');
+/* const ajax$ = ajax<any>('https://random-data-api.com/api/name/random_name');
 
 ajax$.subscribe(
   (data: any) => console.log('Sub 1: ', data.response.first_name)
@@ -39,7 +39,18 @@ ajax$.subscribe(
 
 ajax$.subscribe(
   (data: any) => console.log('Sub 3: ', data.response.first_name)
-);
+); */
 
 
 // Hot observable all subscriptions share same source
+const helloButton = document.querySelector('button#hello');
+
+const helloClick$ = new Observable<MouseEvent>(subscriber => {
+  helloButton.addEventListener('click', (event: MouseEvent) => {
+    subscriber.next(event);
+  });
+});
+
+helloClick$.subscribe(event => console.log('Sub 1: ', event.type, event.x, event.y));
+helloClick$.subscribe(event => console.log('Sub 2: ', event.type, event.x, event.y));
+
