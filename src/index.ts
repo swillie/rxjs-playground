@@ -1,4 +1,5 @@
-import { Observable, of } from "rxjs";
+import { from, Observable, of } from "rxjs";
+import { resolve } from "../webpack.config";
 //Creation functions
 
 //of function. emits all values then completes
@@ -20,7 +21,7 @@ names$.subscribe({
     next: value => console.log(value),
     complete: () => console.log('Completed')
 }); */
-ourOwnOf('Alice', 'Ben', 'Charlie').subscribe({
+/* ourOwnOf('Alice', 'Ben', 'Charlie').subscribe({
     next: value => console.log(value),
     complete: () => console.log('Completed')
 });
@@ -32,4 +33,27 @@ function ourOwnOf(...args: string[]): Observable<string> {
         }
         subscriber.complete();
     });
-}
+} */
+
+
+//From observable. Turn array into observable, or a promise, etc
+//Convert array to observable
+/* from(['Alice', 'Ben', 'Charlie']).subscribe( {
+    next: value => console.log(value),
+    complete: () => console.log('Completed')
+}); */
+
+//Convert promise to observable
+// const somePromise = new Promise((resolve, reject) => {
+//     resolve('Resolved');
+// });
+const somePromise = new Promise((resolve, reject) => {
+    reject('Rejected!');
+});
+
+const observableFromPromise$ = from(somePromise);
+observableFromPromise$.subscribe({
+    next: value => console.log(value),
+    complete: () => console.log('Completed'),
+    error: err => console.log('Error:', err)
+})
